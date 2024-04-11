@@ -10,13 +10,13 @@ import eightbitlab.com.blurview.BlurView
 import eightbitlab.com.blurview.RenderEffectBlur
 import eightbitlab.com.blurview.RenderScriptBlur
 
-class BlurViewViewManager : SimpleViewManager<BlurView>() {
+class BlurViewViewManager : SimpleViewManager<View>() {
   override fun getName() = "BlurViewView"
 
   private var blurReduction = 4f
   private var blurRadius = 50f
 
-  override fun createViewInstance(reactContext: ThemedReactContext): BlurView {
+  override fun createViewInstance(reactContext: ThemedReactContext): View {
     val blurView = BlurView(reactContext.baseContext).also {
       it.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
       val decorView = reactContext.currentActivity
