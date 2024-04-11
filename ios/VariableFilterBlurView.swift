@@ -1,9 +1,7 @@
-//  Created by Gary Tokman (github.com/gtokman) on 5/30/23.
-//  Copyright © 2023 G. Tokman. All rights reserved.
+//  Created by Yusuke Kimura (github.com/Ucekay) on 04/11/24.
+//  Copyright © 2024 Yusuke Kimura. All rights reserved.
 //
-//  ---
-//
-//  This work is a port to RN from Andrew Zheng's VariableBlurView.
+//  This work is based on the work by Gary Tokman's VariableBlurView.
 //  Original repository: https://github.com/aheze/VariableBlurView
 //  Original license:
 //
@@ -30,21 +28,39 @@
 
 /// A variable blur view.
 public class VariableBlurUIView: UIVisualEffectView {
+    public let gradientMask: UIImage
+    public let maxBlurRadius: CGFloat
+    public let filterType: String
+
     public init(
         gradientMask: UIImage,
         maxBlurRadius: CGFloat = 20,
         filterType: String = "variableBlur"
     ) {
+        self.gradientMask = gradientMask
+        self.maxBlurRadius = maxBlurRadius
+        self.filterType = filterType
+
         super.init(effect: UIBlurEffect(style: .regular))
 
         update(gradientMask: gradientMask, maxBlurRadius: maxBlurRadius, filterType: filterType)
     }
-    
+
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     public func update(
         gradientMask: UIImage,
         maxBlurRadius: CGFloat = 20,
         filterType: String = "variableBlur"
     ) {
+        /// Get rid of the visual effect view's dimming/tint view, so we don't see a hard line.
+        if subviews.indices.contains(1) {
+            let tintOverlayView = subviews[1]
+            tintOverlayView.alpha = 0
+        }
         /// This is a private QuartzCore class, encoded in base64.
         ///
         ///             CAFilter
@@ -115,12 +131,6 @@ public class VariableBlurUIView: UIVisualEffectView {
         variableBlur.setValue(gradientImageRef, forKey: "inputMaskImage")
         variableBlur.setValue(true, forKey: "inputNormalizeEdges")
 
-        /// Get rid of the visual effect view's dimming/tint view, so we don't see a hard line.
-        if subviews.indices.contains(1) {
-            let tintOverlayView = subviews[1]
-            tintOverlayView.alpha = 0
-        }
-
         /// We use a `UIVisualEffectView` here purely to get access to its `CABackdropLayer`,
         /// which is able to apply various, real-time CAFilters onto the views underneath.
         let backdropLayer = subviews.first?.layer
@@ -128,10 +138,12 @@ public class VariableBlurUIView: UIVisualEffectView {
         /// Replace the standard filters (i.e. `gaussianBlur`, `colorSaturate`, etc.) with only the variableBlur.
         backdropLayer?.filters = [variableBlur]
     }
-
-    @available(*, unavailable)
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+            /// We have to re-apply when the appearance changes because the view updates its filters.
+            self.update(gradientMask: gradientMask, maxBlurRadius: maxBlurRadius, filterType: filterType)
+        }
     }
 }
 
