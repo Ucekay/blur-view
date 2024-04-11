@@ -1,7 +1,5 @@
-import VisualEffectView
-
 @objc(BlurViewViewManager)
-final class BlurViewViewManager: RCTViewManager {
+class BlurViewViewManager: RCTViewManager {
     
     override func view() -> (BlurViewView) {
         return BlurViewView()
@@ -12,41 +10,38 @@ final class BlurViewViewManager: RCTViewManager {
     }
 }
 
-final class BlurViewView : UIView {
+class BlurViewView : UIView {
     
-    lazy var blurView = VisualEffectView()
+    var gradientMaskImage: UIImage = VariableBlurViewConstants.defaultGradientMask
     
-    @objc var blurTintColor: String? = nil {
+    private let filterType: String = "variableBlur"
+    @objc var gradientMask: String = "" {
         didSet {
-            if let blurTintColor {
-                blurView.colorTint = UIColor(hex: blurTintColor)
+            if
+                let data = Data(base64Encoded: gradientMask, options: .ignoreUnknownCharacters),
+                let image = UIImage(data: data)
+            {
+                self.gradientMaskImage = image
+                blurView.update(gradientMask: image, maxBlurRadius: CGFloat(truncating: maxBlurRadius), filterType: filterType)
+            } else {
+                print("[VariableBlurView] Couldn't create the gradient mask image.")
+                let image = UIImage(systemName: "xmark")!
+                blurView.update(gradientMask: image, maxBlurRadius: CGFloat(truncating: maxBlurRadius), filterType: filterType)
             }
         }
     }
     
-    @objc var blurRadius: NSNumber = 0 {
+    @objc var maxBlurRadius: NSNumber = 20 {
         didSet {
-            blurView.blurRadius = blurRadius.doubleValue
+            blurView.update(gradientMask: gradientMaskImage, maxBlurRadius: maxBlurRadius.doubleValue, filterType: filterType)
         }
     }
     
-    @objc var blurEnabled: Bool = true {
-        didSet {
-            blurView.isHidden = !blurEnabled
-        }
-    }
-    
-    @objc var colorTintOpacity: NSNumber = 0 {
-        didSet {
-            blurView.colorTintAlpha = colorTintOpacity.doubleValue
-        }
-    }
-    
-    @objc var scale: NSNumber = 1 {
-        didSet {
-            blurView.scale = scale.doubleValue
-        }
-    }
+    lazy var blurView = VariableBlurUIView(
+        gradientMask: VariableBlurViewConstants.defaultGradientMask,
+        maxBlurRadius: maxBlurRadius.doubleValue,
+        filterType: filterType
+    )
     
     init() {
         super.init(frame: CGRect.zero)
@@ -66,32 +61,4 @@ final class BlurViewView : UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-}
-
-private extension UIColor {
-    convenience init?(hex: String) {
-        let r, g, b, a: CGFloat
-        
-        if hex.hasPrefix("#") {
-            let start = hex.index(hex.startIndex, offsetBy: 1)
-            let hexColor = String(hex[start...])
-            
-            if hexColor.count == 8 {
-                let scanner = Scanner(string: hexColor)
-                var hexNumber: UInt64 = 0
-                
-                if scanner.scanHexInt64(&hexNumber) {
-                    r = CGFloat((hexNumber & 0xff000000) >> 24) / 255
-                    g = CGFloat((hexNumber & 0x00ff0000) >> 16) / 255
-                    b = CGFloat((hexNumber & 0x0000ff00) >> 8) / 255
-                    a = CGFloat(hexNumber & 0x000000ff) / 255
-                    
-                    self.init(red: r, green: g, blue: b, alpha: a)
-                    return
-                }
-            }
-        }
-        
-        return nil
-    }
 }
