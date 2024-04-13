@@ -1,6 +1,6 @@
 {
-  "name": "@candlefinance/blur-view",
-  "version": "0.3.1",
+  "name": "@ucekay/blur-view",
+  "version": "0.3.2",
   "description": "test",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -41,15 +41,15 @@
     "ios",
     "android"
   ],
-  "repository": "https://github.com/candlefinance/blur-view",
-  "author": "Gary Tokman <gary@trycandle.com> (https://candle.fi)",
+  "repository": "https://github.com/Ucekay/blur-view",
+  "author": "Yusuke Kimura",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/candlefinance/blur-view/issues"
+    "url": "https://github.com/Ucekay/blur-view/issues"
   },
-  "homepage": "https://github.com/candlefinance/blur-view#readme",
+  "homepage": "https://github.com/Ucekay/blur-view#readme",
   "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
+    "registry": ""
   },
   "devDependencies": {
     "@evilmartians/lefthook": "^1.2.2",
@@ -83,7 +83,7 @@
   "engines": {
     "node": ">= 16.0.0"
   },
-  "packageManager": "^yarn@1.22.15",
+  "packageManager": "yarn@1.22.22",
   "jest": {
     "preset": "react-native",
     "modulePathIgnorePatterns": [

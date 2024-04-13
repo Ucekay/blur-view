@@ -1,6 +1,7 @@
 # VariableBlurView for React Native (iOS only)
 
 Variable Blur View for React Native. Inspired by [@jtrivedi](https://github.com/jtrivedi) and [@aheze](https://github.com/aheze/VariableBlurView).
+This is a fork of the `candlefinance/blur-view@0.3.1` with a fix for the issue where the blur does not apply when the color scheme changes.
 
 ## Preview
 

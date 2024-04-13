@@ -1,6 +1,6 @@
 PODS:
   - boost (1.76.0)
-  - candlefinance-blur-view (0.3.0):
+  - candlefinance-blur-view (0.3.2):
     - React-Core
   - CocoaAsyncSocket (7.6.5)
   - DoubleConversion (1.1.6)
@@ -574,7 +574,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   boost: 57d2868c099736d80fcd648bf211b4431e51a558
-  candlefinance-blur-view: 0818b16cefbe918e533fbdd78771c92764a2a0e2
+  candlefinance-blur-view: d039e93bfef6390c231f7c7dceb587715a6fd4a7
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
   FBLazyVector: f637f31eacba90d4fdeff3fa41608b8f361c173b
@@ -626,4 +626,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: bbbdafc59f6f07992352b19e8534eedb2ee164e6
 
-COCOAPODS: 1.12.1
+COCOAPODS: 1.15.2
