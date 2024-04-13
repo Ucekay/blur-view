@@ -10,7 +10,7 @@ https://github.com/candlefinance/blur-view/assets/12258850/53f5a05f-7594-4f7e-ac
 ## Installation
 
 ```sh
-yarn add @candlefinance/blur-view
+yarn add @uceaky/blur-view-fix
 ```
 
 ## Usage
@@ -18,9 +18,9 @@ yarn add @candlefinance/blur-view
 Use the `BlurViewView` component to blur the content behind it.
 
 ```js
-import { BlurViewView } from '@candlefinance/blur-view';
+import { VariableBlurView } from '@ucekay/blur-view-fix';
 
-<BlurViewView
+<VariableBlurView
   style={{
     width,
     height: 200,
